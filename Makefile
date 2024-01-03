@@ -31,6 +31,10 @@ clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
+## Train model
+train:
+	$(PYTHON_INTERPRETER) src/train_model.py
+
 
 #################################################################################
 # PROJECT RULES                                                                 #
@@ -38,7 +42,8 @@ clean:
 
 ## Process raw data into processed data
 data: requirements
-	$(PYTHON_INTERPRETER) $(PROJECT_NAME)/data/make_dataset.py
+	$(PYTHON_INTERPRETER) src/data/make_dataset.py
+#	$(PYTHON_INTERPRETER) $(PROJECT_NAME)/data/make_dataset.py
 
 #################################################################################
 # Documentation RULES                                                           #
