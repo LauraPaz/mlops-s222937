@@ -5,8 +5,8 @@ if __name__ == "__main__":
     file_prefix = "data/raw/"
 
     # load the data
-    train_images = torch.cat([torch.load(f"{file_prefix}train_images_{i}.pt") for i in range(6)], dim=0)
-    train_labels = torch.cat([torch.load(f"{file_prefix}train_target_{i}.pt") for i in range(6)], dim=0)
+    train_images = torch.cat([torch.load(f"{file_prefix}train_images_{i}.pt") for i in range(10)], dim=0)
+    train_labels = torch.cat([torch.load(f"{file_prefix}train_target_{i}.pt") for i in range(10)], dim=0)
     test_images = torch.load(f"{file_prefix}test_images.pt")
     test_labels = torch.load(f"{file_prefix}test_target.pt")
 
