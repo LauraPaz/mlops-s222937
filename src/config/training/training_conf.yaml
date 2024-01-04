@@ -1,0 +1,3 @@
+file_prefix: 'data/processed/'
+lr: 0.003
+epochs: 10

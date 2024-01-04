@@ -82,3 +82,4 @@ def load_and_preprocess_images(data_path: str) -> torch.Tensor:
 
 if __name__ == "__main__":
     predict()
+    # 'models/MyAwesomeModel/trained_model.pth', 'data/processed/test_images.pt'
