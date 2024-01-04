@@ -37,7 +37,7 @@ The directory structure of the project looks like this:
 │
 ├── tests                <- Test files
 │
-├── mlops-s222937  <- Source code for use in this project.
+├── src                  <- Source code for use in this project.
 │   │
 │   ├── __init__.py      <- Makes folder a Python module
 │   │
@@ -61,3 +61,13 @@ The directory structure of the project looks like this:
 Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
 a [cookiecutter template](https://github.com/cookiecutter/cookiecutter) for getting
 started with Machine Learning Operations (MLOps).
+
+
+# How to run
+
+## Training
+
+```bash
+docker build -f dockerfiles/trainer.dockerfile . -t trainer:latest
+
+```
