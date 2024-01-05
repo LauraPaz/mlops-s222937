@@ -5,11 +5,12 @@ import torch
 from torch import nn, optim
 import hydra
 from models.model import MyAwesomeModel
+from rich.logging import RichHandler
 import logging
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(config):
-    log = logging.getLogger(__name__)
+    log = get_logger()
     cfg = config.training
 
     model = MyAwesomeModel()
@@ -46,6 +47,23 @@ def train(config):
     # make a plot of the training loss
     plt.plot(losses)
     plt.savefig("reports/figures/training_loss.png")
+
+
+def get_logger():
+    hydra_path = hydra.core.hydra_config.HydraConfig.get().runtime.output_dir
+    job_name = hydra.core.hydra_config.HydraConfig.get().job.name
+
+    file_handler = logging.FileHandler(os.path.join(hydra_path, f"{job_name}.log"))
+    rich_handler = RichHandler()
+
+    log = logging.getLogger(__name__)
+    log.setLevel(logging.DEBUG)
+    log.addHandler(rich_handler)
+    log.addHandler(file_handler)
+    log.propagate = False
+    log.info("Successfully create rich logger")
+
+    return log
 
 
 if __name__ == "__main__":
