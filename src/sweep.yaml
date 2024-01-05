@@ -1,0 +1,17 @@
+program: src/train_model_sweep.py  # Replace with the actual script name
+method: grid
+
+metric:
+  goal: maximize  # or minimize depending on your metric
+  name: validation_accuracy  # Replace with the actual metric name
+
+parameters:
+  learning_rate:
+    values: [0.001, 0.01, 0.1]
+  batch_size:
+    values: [16, 32, 64]
+
+command:
+  - ${interpreter}
+  - ${program}
+  - ${args}

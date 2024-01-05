@@ -4,16 +4,23 @@ import matplotlib.pyplot as plt
 import torch
 from torch import nn, optim
 import hydra
+import wandb
 from models.model import MyAwesomeModel
 from rich.logging import RichHandler
 import logging
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(config):
+
+    wandb.init()
+
     log = get_logger()
     cfg = config.training
 
     model = MyAwesomeModel()
+
+    # Magic
+    wandb.watch(model, log_freq=100)
 
     train_images = torch.load(f"{cfg.file_prefix}train_images.pt")
     train_labels = torch.load(f"{cfg.file_prefix}train_labels.pt")
@@ -35,8 +42,21 @@ def train(config):
             optimizer.step()
             running_loss += loss.item()
         else:
-            log.info(f"Training loss: {running_loss/len(train_loader)}")
-            losses.append(running_loss / len(train_loader))
+            training_loss = running_loss / len(train_loader)
+
+            log.info(f"Training loss: {training_loss}")
+            wandb.log({"Training loss": training_loss})
+            losses.append(training_loss)
+
+            # plot a calendar heatmap of the weights of the last layer
+            plt.imshow(model.fc3.weight.detach().numpy())
+            # log the plot to wandb
+            wandb.log({"fc3 weights heatmap": plt})
+
+            # plot a histogram of the weights of the last layer
+            plt.hist(model.fc3.weight.detach().numpy().flatten(), bins=10)
+            # log the plot to wandb
+            wandb.log({"fc3 weights histogram": wandb.Image(plt)})
 
     # create a folder for the model with the class name of the model
     os.makedirs(f"models/{model.__class__.__name__}", exist_ok=True)
