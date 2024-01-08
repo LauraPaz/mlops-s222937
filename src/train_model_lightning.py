@@ -1,13 +1,8 @@
-import os
-
 import hydra
-import matplotlib.pyplot as plt
 import torch
 from pytorch_lightning import Trainer, loggers
 from pytorch_lightning.callbacks import ModelCheckpoint
-from torch import nn, optim
 
-import wandb
 from data.make_dataset import mnist
 from models.model import MyLightningModel
 
