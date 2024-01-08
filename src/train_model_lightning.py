@@ -1,15 +1,16 @@
 import os
 
+import hydra
 import matplotlib.pyplot as plt
 import torch
+from pytorch_lightning import Trainer, loggers
+from pytorch_lightning.callbacks import ModelCheckpoint
 from torch import nn, optim
-import hydra
+
 import wandb
 from data.make_dataset import mnist
 from models.model import MyLightningModel
-from pytorch_lightning.callbacks import ModelCheckpoint
-from pytorch_lightning import Trainer
-from pytorch_lightning import loggers
+
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(config):

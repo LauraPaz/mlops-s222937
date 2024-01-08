@@ -1,6 +1,9 @@
 import os
+
 import pytest
+
 from src.data.make_dataset import mnist
+
 
 @pytest.mark.skipif(not os.path.exists('data/raw'), reason="Data files not found")
 def test_data():

@@ -1,14 +1,16 @@
+import logging
 import os
 
+import hydra
 import matplotlib.pyplot as plt
 import torch
-from torch import nn, optim
-import hydra
-import wandb
-from src.models.model import MyAwesomeModel
 from rich.logging import RichHandler
+from torch import nn, optim
+
+import wandb
 from src.data.make_dataset import mnist
-import logging
+from src.models.model import MyAwesomeModel
+
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(config):

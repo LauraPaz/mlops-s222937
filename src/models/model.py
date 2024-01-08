@@ -1,7 +1,9 @@
 import torch
 import torch.nn.functional as F
-import wandb
 from pytorch_lightning import LightningModule
+
+import wandb
+
 
 class MyNeuralNet(torch.nn.Module):
     """Basic neural network class.

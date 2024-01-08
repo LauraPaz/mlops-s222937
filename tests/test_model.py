@@ -1,7 +1,7 @@
-from src.models.model import MyAwesomeModel
-from src.models.model import MyLightningModel
 import pytest
 import torch
+
+from src.models.model import MyAwesomeModel, MyLightningModel
 
 model = MyAwesomeModel()
 
