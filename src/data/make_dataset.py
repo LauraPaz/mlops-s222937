@@ -1,5 +1,6 @@
 import torch
 
+
 def mnist():
     """Return train and test dataloaders for MNIST."""
 
@@ -19,7 +20,6 @@ def mnist():
 
     test_images = (test_images - mean) / std
 
-
     print(train_images.shape)
     print(train_labels.shape)
 
@@ -36,9 +36,10 @@ def mnist():
     torch.save(test_labels, "data/processed/test_labels.pt")
 
     return (
-        torch.utils.data.TensorDataset(train_images, train_labels), 
-        torch.utils.data.TensorDataset(test_images, test_labels)
+        torch.utils.data.TensorDataset(train_images, train_labels),
+        torch.utils.data.TensorDataset(test_images, test_labels),
     )
+
 
 if __name__ == "__main__":
     mnist()
