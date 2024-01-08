@@ -43,9 +43,9 @@ class MyAwesomeModel(torch.nn.Module):
 
     def forward(self, x):
         if x.ndim != 3:
-            raise ValueError('Expected input to a 3D tensor')
+            raise ValueError("Expected input to a 3D tensor")
         if x.shape[0] != 1 or x.shape[1] != 28 or x.shape[2] != 28:
-            raise ValueError('Expected each sample to have shape [1, 28, 28]')
+            raise ValueError("Expected each sample to have shape [1, 28, 28]")
 
         # make sure input tensor is flattened
         x = x.view(x.shape[0], -1)
@@ -55,7 +55,7 @@ class MyAwesomeModel(torch.nn.Module):
         x = F.log_softmax(self.fc3(x), dim=1)
 
         return x
-    
+
 
 class MyLightningModel(LightningModule):
     """My awesome lightning model."""
@@ -65,48 +65,47 @@ class MyLightningModel(LightningModule):
         self.backbone = torch.nn.Sequential(
             torch.nn.Conv2d(1, 32, 3),  # [B, 1, 28, 28] -> [B, 32, 26, 26]
             torch.nn.LeakyReLU(),
-            torch.nn.Conv2d(32, 64, 3), # [B, 32, 26, 26] -> [B, 64, 24, 24]
+            torch.nn.Conv2d(32, 64, 3),  # [B, 32, 26, 26] -> [B, 64, 24, 24]
             torch.nn.LeakyReLU(),
-            torch.nn.MaxPool2d(2),      # [B, 64, 24, 24] -> [B, 64, 12, 12]
-            torch.nn.Flatten(),        # [B, 64, 12, 12] -> [B, 64 * 12 * 12]
+            torch.nn.MaxPool2d(2),  # [B, 64, 24, 24] -> [B, 64, 12, 12]
+            torch.nn.Flatten(),  # [B, 64, 12, 12] -> [B, 64 * 12 * 12]
             torch.nn.Linear(144, 10),
-            
         )
 
         self.criterion = torch.nn.CrossEntropyLoss()
 
     def forward(self, x):
         return self.backbone(x)
-    
+
     def training_step(self, batch, batch_idx):
         data, target = batch
         preds = self(data)
 
-         # self.logger.experiment is the same as wandb.log
-        self.logger.experiment.log({'logits': wandb.Histogram(preds.detach().numpy())})
+        # self.logger.experiment is the same as wandb.log
+        self.logger.experiment.log({"logits": wandb.Histogram(preds.detach().numpy())})
 
         loss = self.criterion(preds, target)
         acc = (target == preds.argmax(dim=-1)).float().mean()
-        self.log('train_loss', loss)
-        self.log('train_acc', acc)
+        self.log("train_loss", loss)
+        self.log("train_acc", acc)
         return loss
-    
+
     def validation_step(self, batch, batch_idx):
         data, target = batch
         preds = self(data)
         loss = self.criterion(preds, target)
         acc = (target == preds.argmax(dim=-1)).float().mean()
-        self.log('val_loss', loss)
-        self.log('val_acc', acc)
+        self.log("val_loss", loss)
+        self.log("val_acc", acc)
         return loss
-    
+
     def test_step(self, batch, batch_idx):
         data, target = batch
         preds = self(data)
         loss = self.criterion(preds, target)
         acc = (target == preds.argmax(dim=-1)).float().mean()
-        self.log('test_loss', loss)
-        self.log('test_acc', acc)
+        self.log("test_loss", loss)
+        self.log("test_acc", acc)
         return loss
 
     def configure_optimizers(self):

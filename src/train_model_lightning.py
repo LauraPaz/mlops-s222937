@@ -18,9 +18,7 @@ def train(config):
 
     model = MyLightningModel()
 
-    checkpoint_callback = ModelCheckpoint(
-        dirpath="./models", monitor="val_loss", mode="min"
-    )
+    checkpoint_callback = ModelCheckpoint(dirpath="./models", monitor="val_loss", mode="min")
 
     train_set, _ = mnist()
 
@@ -29,12 +27,13 @@ def train(config):
     trainer = Trainer(
         callbacks=[checkpoint_callback],
         max_epochs=cfg.epochs,
-        limit_train_batches=0.2, 
+        limit_train_batches=0.2,
         logger=loggers.WandbLogger(project="mlops-s222937"),
         precision=16,
-        profiler='simple',
+        profiler="simple",
     )
     trainer.fit(model, train_loader)
+
 
 if __name__ == "__main__":
     train()

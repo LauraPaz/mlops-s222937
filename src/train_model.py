@@ -14,7 +14,6 @@ from src.models.model import MyAwesomeModel
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def train(config):
-
     wandb.init()
 
     log = get_logger()
