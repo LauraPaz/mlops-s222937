@@ -3,6 +3,12 @@ docs/site/
 # data
 data/
 
+# outputs
+outputs/
+
+# wandb
+wandb/
+
 # test cache
 manual_test/
 
