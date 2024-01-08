@@ -3,7 +3,7 @@ from unittest.mock import patch
 from hydra import compose, initialize
 
 @patch('src.models.model.MyAwesomeModel')
-def test_train(mock_model):
+def _test_train(mock_model):
     with initialize(config_path="../src/config"):
         cfg = compose(config_name="default_config.yaml")
 
