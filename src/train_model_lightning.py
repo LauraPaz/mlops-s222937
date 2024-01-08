@@ -5,6 +5,7 @@ import torch
 from torch import nn, optim
 import hydra
 import wandb
+from data.make_dataset import mnist
 from models.model import MyLightningModel
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning import Trainer
@@ -20,12 +21,9 @@ def train(config):
         dirpath="./models", monitor="val_loss", mode="min"
     )
 
-    train_images = torch.load(f"{cfg.file_prefix}train_images.pt")
-    train_labels = torch.load(f"{cfg.file_prefix}train_labels.pt")
+    train_set, _ = mnist()
 
-    train_loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(train_images, train_labels), batch_size=64, shuffle=True
-    )
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=64, shuffle=True)
 
     trainer = Trainer(
         callbacks=[checkpoint_callback],

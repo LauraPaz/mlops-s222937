@@ -40,6 +40,11 @@ class MyAwesomeModel(torch.nn.Module):
         self.fc3 = torch.nn.Linear(64, 10)
 
     def forward(self, x):
+        if x.ndim != 3:
+            raise ValueError('Expected input to a 3D tensor')
+        if x.shape[0] != 1 or x.shape[1] != 28 or x.shape[2] != 28:
+            raise ValueError('Expected each sample to have shape [1, 28, 28]')
+
         # make sure input tensor is flattened
         x = x.view(x.shape[0], -1)
 
@@ -56,13 +61,14 @@ class MyLightningModel(LightningModule):
     def __init__(self):
         super().__init__()
         self.backbone = torch.nn.Sequential(
-            torch.nn.Conv2d(64, 32, 3),  # [B, 1, 28, 28] -> [B, 32, 26, 26]
+            torch.nn.Conv2d(1, 32, 3),  # [B, 1, 28, 28] -> [B, 32, 26, 26]
             torch.nn.LeakyReLU(),
             torch.nn.Conv2d(32, 64, 3), # [B, 32, 26, 26] -> [B, 64, 24, 24]
             torch.nn.LeakyReLU(),
             torch.nn.MaxPool2d(2),      # [B, 64, 24, 24] -> [B, 64, 12, 12]
             torch.nn.Flatten(),        # [B, 64, 12, 12] -> [B, 64 * 12 * 12]
             torch.nn.Linear(144, 10),
+            
         )
 
         self.criterion = torch.nn.CrossEntropyLoss()

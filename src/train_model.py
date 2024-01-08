@@ -5,8 +5,9 @@ import torch
 from torch import nn, optim
 import hydra
 import wandb
-from models.model import MyAwesomeModel
+from src.models.model import MyAwesomeModel
 from rich.logging import RichHandler
+from src.data.make_dataset import mnist
 import logging
 
 @hydra.main(config_path="config", config_name="default_config.yaml")
@@ -22,12 +23,10 @@ def train(config):
     # Magic
     wandb.watch(model, log_freq=100)
 
-    train_images = torch.load(f"{cfg.file_prefix}train_images.pt")
-    train_labels = torch.load(f"{cfg.file_prefix}train_labels.pt")
+    train_set, _ = mnist()
 
-    train_loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(train_images, train_labels), batch_size=64, shuffle=True
-    )
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=64, shuffle=True)
+
     criterion = nn.NLLLoss()
     optimizer = optim.Adam(model.parameters(), lr=cfg.lr)
 
